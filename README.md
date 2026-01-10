@@ -18,7 +18,6 @@
             --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
         }
 
-        /* 深色模式变量 */
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme]) {
                 --primary-color: #6b8cbc;
@@ -30,7 +29,6 @@
             }
         }
 
-        /* 用户手动选择主题时的变量 */
         [data-theme="light"] {
             --primary-color: #4a6fa5;
             --secondary-color: #6b8cbc;
@@ -68,7 +66,6 @@
             min-height: 100vh;
         }
 
-        /* 移动端优化 */
         @media (max-width: 768px) {
             body {
                 padding: 12px;
@@ -77,7 +74,6 @@
             }
         }
 
-        /* 防止移动端文本过小 */
         html {
             font-size: 16px;
         }
@@ -145,12 +141,15 @@
 
         .search-box {
             flex-grow: 1;
-            min-width: 0; /* 防止flex元素溢出 */
+            min-width: 0;
+            position: relative;
+            display: flex;
+            align-items: center;
         }
 
         #searchInput {
             width: 100%;
-            padding: 14px 20px 14px 50px;
+            padding: 14px 60px 14px 50px;
             border: 1px solid #ddd;
             border-radius: 50px;
             font-size: 1rem;
@@ -158,12 +157,12 @@
             background-color: var(--card-color);
             color: var(--text-color);
             border-color: rgba(0, 0, 0, 0.1);
-            -webkit-appearance: none; /* 移除iOS默认样式 */
+            -webkit-appearance: none;
         }
 
         @media (max-width: 768px) {
             #searchInput {
-                padding: 12px 15px 12px 45px;
+                padding: 12px 55px 12px 45px;
             }
         }
 
@@ -175,11 +174,44 @@
 
         .search-icon {
             position: absolute;
-            left: 15px;
+            left: 20px;
             top: 50%;
             transform: translateY(-50%);
             color: #777;
             pointer-events: none;
+            z-index: 2;
+        }
+
+        .search-engine-selector {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+        }
+
+        #searchEngine {
+            padding: 6px 30px 6px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: var(--card-color);
+            color: var(--text-color);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 100px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 12px;
+        }
+
+        #searchEngine:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
         }
 
         .theme-selector {
@@ -297,16 +329,15 @@
         }
 
         .bookmarks-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
             margin-bottom: 40px;
         }
 
         @media (max-width: 768px) {
             .bookmarks-container {
-                grid-template-columns: 1fr;
-                gap: 15px;
+                gap: 20px;
             }
         }
 
@@ -338,16 +369,48 @@
         }
 
         .bookmarks-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
             list-style: none;
         }
 
+        @media (max-width: 768px) {
+            .bookmarks-list {
+                gap: 12px;
+            }
+        }
+
         .bookmark-item {
-            margin-bottom: 12px;
-            padding: 14px;
-            border-radius: 8px;
+            flex: 1 0 calc(25% - 15px);
+            min-width: 220px;
+            max-width: 300px;
+            padding: 18px;
+            border-radius: 10px;
             transition: all 0.3s;
             background-color: rgba(0, 0, 0, 0.03);
             border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        @media (max-width: 1200px) {
+            .bookmark-item {
+                flex: 1 0 calc(33.333% - 15px);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .bookmark-item {
+                flex: 1 0 calc(50% - 15px);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .bookmark-item {
+                flex: 1 0 100%;
+                min-width: auto;
+                max-width: 100%;
+            }
         }
 
         @media (prefers-color-scheme: dark) {
@@ -364,61 +427,91 @@
 
         .bookmark-item:hover {
             background-color: rgba(74, 111, 165, 0.1);
-            transform: translateX(3px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         }
 
         .bookmark-link {
             display: flex;
-            align-items: center;
+            flex-direction: column;
             text-decoration: none;
             color: var(--text-color);
-            min-height: 40px;
+            height: 100%;
+        }
+
+        .bookmark-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
         }
 
         .bookmark-favicon {
-            width: 20px;
-            height: 20px;
-            margin-right: 12px;
+            width: 32px;
+            height: 32px;
+            margin-right: 15px;
             object-fit: contain;
             flex-shrink: 0;
+            border-radius: 6px;
         }
 
         .bookmark-info {
             flex-grow: 1;
-            min-width: 0; /* 防止文本溢出 */
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .bookmark-name {
-            font-weight: 600;
-            margin-bottom: 4px;
-            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 1.05rem;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            color: var(--primary-color);
+            line-height: 1.2;
         }
 
         .bookmark-url {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-color);
             opacity: 0.7;
             word-break: break-all;
             line-height: 1.3;
+            margin-bottom: 10px;
         }
 
         .bookmark-description {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-color);
-            opacity: 0.8;
-            margin-top: 4px;
+            opacity: 0.9;
             line-height: 1.4;
+            flex-grow: 1;
         }
 
         .bookmark-actions {
+            position: absolute;
+            top: 12px;
+            right: 12px;
             opacity: 0;
             transition: opacity 0.3s;
             display: flex;
-            gap: 10px;
-            flex-shrink: 0;
+            gap: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 6px;
+            padding: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .bookmark-actions {
+                background-color: rgba(45, 45, 45, 0.9);
+            }
+        }
+
+        [data-theme="dark"] .bookmark-actions {
+            background-color: rgba(45, 45, 45, 0.9);
         }
 
         .bookmark-item:hover .bookmark-actions {
@@ -427,7 +520,7 @@
 
         @media (max-width: 768px) {
             .bookmark-actions {
-                opacity: 1; /* 移动端始终显示操作按钮 */
+                display: none;
             }
         }
 
@@ -436,27 +529,19 @@
             border: none;
             cursor: pointer;
             color: #777;
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: color 0.2s;
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
+            border-radius: 4px;
         }
 
         .action-btn:hover {
             background-color: rgba(0, 0, 0, 0.05);
             color: var(--primary-color);
-        }
-
-        @media (max-width: 768px) {
-            .action-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-            }
         }
 
         footer {
@@ -647,6 +732,7 @@
             color: var(--text-color);
             opacity: 0.6;
             grid-column: 1 / -1;
+            width: 100%;
         }
 
         .empty-state i {
@@ -666,7 +752,6 @@
             font-size: 1.4rem;
         }
 
-        /* 滚动条样式 */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -686,7 +771,6 @@
             background: rgba(0, 0, 0, 0.3);
         }
 
-        /* 触摸设备优化 */
         @media (hover: none) and (pointer: coarse) {
             .bookmark-item:hover {
                 transform: none;
@@ -710,29 +794,6 @@
             }
         }
 
-        /* 系统深色模式自动切换提示 */
-        .system-theme-notice {
-            display: none;
-            background-color: var(--primary-color);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .system-theme-notice.auto-theme-active {
-                display: block;
-            }
-        }
-
-        [data-theme="dark"] .system-theme-notice.manual-dark-active {
-            display: block;
-        }
-
-        /* 移动端底部操作栏 */
         .mobile-bottom-bar {
             display: none;
             position: fixed;
@@ -780,6 +841,42 @@
             font-size: 1.2rem;
             margin-bottom: 4px;
         }
+        
+        .bookmark-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        
+        .bookmark-count {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .search-hint {
+            font-size: 0.85rem;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: center;
+        }
+        
+        .favicon-fallback {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📍</text></svg>">
@@ -788,19 +885,23 @@
     <header>
         <h1><i class="fas fa-compass"></i> 我的收藏导航</h1>
         <p class="subtitle">精心整理的网站收藏，快速访问常用资源</p>
-        <div class="system-theme-notice auto-theme-active" id="systemThemeNotice">
-            <i class="fas fa-moon"></i> 已跟随系统切换为深色模式
-        </div>
-        <div class="system-theme-notice manual-dark-active" id="manualDarkNotice">
-            <i class="fas fa-moon"></i> 已手动切换为深色模式
-        </div>
+        <p class="search-hint">按回车键使用搜索引擎，在收藏中搜索直接输入即可</p>
     </header>
 
     <div class="container">
         <div class="controls">
-            <div class="search-box">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" id="searchInput" placeholder="搜索收藏的网站..." autocomplete="off">
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="搜索收藏的网站..." autocomplete="off">
+                    <div class="search-engine-selector">
+                        <select id="searchEngine">
+                            <option value="google">Google</option>
+                            <option value="bing">Bing</option>
+                            <option value="baidu">百度</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             
             <div class="theme-selector">
@@ -815,19 +916,15 @@
 
         <div class="categories" id="categoriesContainer">
             <button class="category-btn active" data-category="all">全部</button>
-            <!-- 分类按钮将通过JavaScript动态生成 -->
         </div>
 
-        <div class="bookmarks-container" id="bookmarksContainer">
-            <!-- 书签内容将通过JavaScript动态生成 -->
-        </div>
+        <div class="bookmarks-container" id="bookmarksContainer"></div>
 
         <button class="add-bookmark-btn" id="addBookmarkBtn">
             <i class="fas fa-plus"></i> 添加新收藏
         </button>
     </div>
 
-    <!-- 移动端底部操作栏 -->
     <div class="mobile-bottom-bar">
         <button class="mobile-action" id="mobileAddBtn">
             <i class="fas fa-plus"></i>
@@ -852,7 +949,6 @@
         <p>数据存储在本地浏览器中，清空浏览器数据会丢失收藏</p>
     </footer>
 
-    <!-- 添加/编辑书签模态框 -->
     <div class="modal" id="bookmarkModal">
         <div class="modal-content">
             <h3 id="modalTitle">添加新收藏</h3>
@@ -869,7 +965,6 @@
                     <label for="bookmarkCategory">分类</label>
                     <select id="bookmarkCategory" class="form-control" required>
                         <option value="">选择分类</option>
-                        <!-- 分类选项将通过JavaScript动态生成 -->
                     </select>
                 </div>
                 <div class="form-group">
@@ -898,7 +993,13 @@
             { id: 9, name: "Can I use", url: "https://caniuse.com", category: "开发", description: "检查浏览器兼容性" },
             { id: 10, name: "Dribbble", url: "https://dribbble.com", category: "设计", description: "设计师作品展示平台" },
             { id: 11, name: "Unsplash", url: "https://unsplash.com", category: "设计", description: "免费高质量图片库" },
-            { id: 12, name: "Google Drive", url: "https://drive.google.com", category: "工具", description: "云存储服务" }
+            { id: 12, name: "Google Drive", url: "https://drive.google.com", category: "工具", description: "云存储服务" },
+            { id: 13, name: "ChatGPT", url: "https://chat.openai.com", category: "AI工具", description: "OpenAI聊天机器人" },
+            { id: 14, name: "Figma", url: "https://figma.com", category: "设计", description: "在线设计协作工具" },
+            { id: 15, name: "VSCode", url: "https://code.visualstudio.com", category: "开发", description: "微软开源代码编辑器" },
+            { id: 16, name: "React", url: "https://react.dev", category: "开发", description: "React官方文档" },
+            { id: 17, name: "Vue.js", url: "https://vuejs.org", category: "开发", description: "Vue.js官方文档" },
+            { id: 18, name: "Tailwind CSS", url: "https://tailwindcss.com", category: "开发", description: "实用优先的CSS框架" }
         ];
 
         // 从localStorage加载书签或使用默认数据
@@ -907,11 +1008,45 @@
         // 当前选中的分类
         let currentCategory = 'all';
         
-        // 当前正在编辑的书签ID（如果是编辑模式）
+        // 当前正在编辑的书签ID
         let editingBookmarkId = null;
         
         // 当前主题模式
-        let currentThemeMode = 'auto'; // 'auto', 'light', 'dark', 'blue', 'green', 'purple'
+        let currentThemeMode = 'auto';
+        
+        // 搜索引擎配置
+        const searchEngines = {
+            google: { name: "Google", url: "https://www.google.com/search?q=" },
+            bing: { name: "Bing", url: "https://www.bing.com/search?q=" },
+            baidu: { name: "百度", url: "https://www.baidu.com/s?wd=" }
+        };
+        
+        // 默认favicon（SVG格式，内联）
+        const defaultFaviconSVG = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzRBNjdBNSI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bS0xIDE1bC01LTUgMS40MS0xLjQxTDEwIDE0LjE3bDYuNTktNi41OUwxOCA5bC04IDh6Ii8+PC9zdmc+';
+        
+        // 获取网站名称首字母
+        function getInitials(name) {
+            if (!name) return '?';
+            const words = name.split(' ');
+            if (words.length === 1) {
+                return name.substring(0, 2).toUpperCase();
+            }
+            return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase();
+        }
+        
+        // 获取favicon URL - 使用国内可访问的服务
+        function getFaviconUrl(hostname) {
+            if (!hostname) return defaultFaviconSVG;
+            
+            // 国内可访问的favicon服务
+            const services = [
+                `https://api.iowen.cn/favicon/${hostname}.png`,
+                `https://${hostname}/favicon.ico`,
+                `https://favicon.cccyun.cn/${hostname}.png`
+            ];
+            
+            return services[0]; // 使用第一个服务
+        }
         
         // DOM元素
         const bookmarksContainer = document.getElementById('bookmarksContainer');
@@ -925,8 +1060,7 @@
         const addBookmarkBtn = document.getElementById('addBookmarkBtn');
         const cancelBtn = document.getElementById('cancelBtn');
         const currentYearElement = document.getElementById('currentYear');
-        const systemThemeNotice = document.getElementById('systemThemeNotice');
-        const manualDarkNotice = document.getElementById('manualDarkNotice');
+        const searchEngineSelect = document.getElementById('searchEngine');
         
         // 移动端操作按钮
         const mobileAddBtn = document.getElementById('mobileAddBtn');
@@ -936,7 +1070,7 @@
         
         // 主题色设置
         const themes = {
-            auto: null, // 自动跟随系统
+            auto: null,
             light: {
                 name: 'light',
                 '--primary-color': '#4a6fa5',
@@ -1009,21 +1143,6 @@
             
             // 监听系统主题变化
             watchSystemThemeChange();
-            
-            // 移动端优化：设置视口高度
-            setViewportHeight();
-        }
-        
-        // 设置视口高度（解决移动端100vh问题）
-        function setViewportHeight() {
-            const setHeight = () => {
-                const vh = window.innerHeight * 0.01;
-                document.documentElement.style.setProperty('--vh', `${vh}px`);
-            };
-            
-            setHeight();
-            window.addEventListener('resize', setHeight);
-            window.addEventListener('orientationchange', setHeight);
         }
         
         // 生成分类按钮
@@ -1104,12 +1223,19 @@
                 const categorySection = document.createElement('div');
                 categorySection.className = 'category-section';
                 
-                // 分类标题
+                // 分类标题和统计信息
                 const categoryTitle = document.createElement('div');
                 categoryTitle.className = 'category-title';
                 categoryTitle.innerHTML = `
                     <i class="fas fa-folder category-icon"></i>
                     <h2>${category}</h2>
+                `;
+                
+                // 分类统计信息
+                const bookmarkStats = document.createElement('div');
+                bookmarkStats.className = 'bookmark-stats';
+                bookmarkStats.innerHTML = `
+                    <div>共 <span class="bookmark-count">${bookmarksByCategory[category].length}</span> 个收藏</div>
                 `;
                 
                 // 书签列表
@@ -1122,23 +1248,43 @@
                     bookmarkItem.className = 'bookmark-item';
                     bookmarkItem.dataset.id = bookmark.id;
                     
-                    // 获取网站favicon
-                    let faviconUrl = '';
+                    // 获取主机名
+                    let hostname = '';
                     try {
                         const url = new URL(bookmark.url);
-                        faviconUrl = `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=32`;
+                        hostname = url.hostname;
                     } catch {
-                        faviconUrl = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzRBNjdBNSI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bS0xIDE1bC01LTUgMS40MS0xLjQxTDEwIDE0LjE3bDYuNTktNi41OUwxOCA5bC04IDh6Ii8+PC9zdmc+';
+                        hostname = '';
                     }
+                    
+                    // 获取favicon URL
+                    const faviconUrl = getFaviconUrl(hostname);
+                    const initials = getInitials(bookmark.name);
                     
                     bookmarkItem.innerHTML = `
                         <a href="${bookmark.url}" target="_blank" rel="noopener" class="bookmark-link">
-                            <img src="${faviconUrl}" alt="${bookmark.name}图标" class="bookmark-favicon" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzRBNjdBNSI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bS0xIDE1bC01LTUgMS40MS0xLjQxTDEwIDE0LjE3bDYuNTktNi41OUwxOCA5bC04IDh6Ii8+PC9zdmc+'">
-                            <div class="bookmark-info">
-                                <div class="bookmark-name">${bookmark.name}</div>
-                                <div class="bookmark-url">${bookmark.url}</div>
-                                ${bookmark.description ? `<div class="bookmark-description">${bookmark.description}</div>` : ''}
+                            <div class="bookmark-header">
+                                <div class="bookmark-favicon">
+                                    <img src="${faviconUrl}" alt="${bookmark.name}图标" 
+                                         onerror="
+                                            this.style.display='none';
+                                            const fallback = this.parentNode.querySelector('.favicon-fallback');
+                                            if (fallback) fallback.style.display='flex';
+                                            else {
+                                                const div = document.createElement('div');
+                                                div.className = 'favicon-fallback';
+                                                div.textContent = '${initials}';
+                                                this.parentNode.appendChild(div);
+                                            }
+                                         ">
+                                    <div class="favicon-fallback" style="display:none">${initials}</div>
+                                </div>
+                                <div class="bookmark-info">
+                                    <div class="bookmark-name">${bookmark.name}</div>
+                                    <div class="bookmark-url">${bookmark.url.replace(/^https?:\/\//, '')}</div>
+                                </div>
                             </div>
+                            ${bookmark.description ? `<div class="bookmark-description">${bookmark.description}</div>` : ''}
                         </a>
                         <div class="bookmark-actions">
                             <button class="action-btn edit-btn" title="编辑">
@@ -1154,6 +1300,7 @@
                 });
                 
                 categorySection.appendChild(categoryTitle);
+                categorySection.appendChild(bookmarkStats);
                 categorySection.appendChild(bookmarksList);
                 bookmarksContainer.appendChild(categorySection);
             });
@@ -1211,9 +1358,17 @@
                 }
             });
             
-            // 搜索框输入事件
+            // 搜索框输入事件 - 过滤本地书签
             searchInput.addEventListener('input', function() {
                 generateBookmarks();
+            });
+            
+            // 搜索框回车键事件 - 执行网页搜索
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performWebSearch();
+                }
             });
             
             // 添加书签按钮点击事件
@@ -1225,7 +1380,6 @@
             // 移动端搜索按钮点击事件
             mobileSearchBtn.addEventListener('click', function() {
                 searchInput.focus();
-                // 移动端键盘弹出时可能需要调整布局
                 if (window.innerWidth <= 768) {
                     setTimeout(() => {
                         searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1235,7 +1389,6 @@
             
             // 移动端主题按钮点击事件
             mobileThemeBtn.addEventListener('click', function() {
-                // 显示主题选择器
                 document.querySelector('.theme-selector').scrollIntoView({ behavior: 'smooth' });
             });
             
@@ -1387,9 +1540,6 @@
                     // 保存主题选择
                     localStorage.setItem('bookmarkTheme', themeId);
                     currentThemeMode = themeId.replace('Theme', '');
-                    
-                    // 更新系统主题提示
-                    updateThemeNotice();
                 });
             });
             
@@ -1406,6 +1556,23 @@
                     searchInput.focus();
                 }
             });
+        }
+        
+        // 执行网页搜索
+        function performWebSearch() {
+            const searchTerm = searchInput.value.trim();
+            if (!searchTerm) {
+                searchInput.focus();
+                return;
+            }
+            
+            const selectedEngine = searchEngineSelect.value;
+            const engine = searchEngines[selectedEngine];
+            
+            if (engine) {
+                const searchUrl = engine.url + encodeURIComponent(searchTerm);
+                window.open(searchUrl, '_blank');
+            }
         }
         
         // 打开书签模态框
@@ -1463,14 +1630,12 @@
             
             // 应用系统主题对应的CSS变量
             if (isDarkMode) {
-                // 应用深色主题变量
                 Object.entries(themes.dark).forEach(([property, value]) => {
                     if (property !== 'name') {
                         document.documentElement.style.setProperty(property, value);
                     }
                 });
             } else {
-                // 应用浅色主题变量
                 Object.entries(themes.light).forEach(([property, value]) => {
                     if (property !== 'name') {
                         document.documentElement.style.setProperty(property, value);
@@ -1484,29 +1649,10 @@
             const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
             
             darkModeMediaQuery.addEventListener('change', (e) => {
-                // 只有在自动主题模式下才跟随系统变化
                 if (currentThemeMode === 'auto') {
                     applySystemTheme();
-                    updateThemeNotice();
                 }
             });
-        }
-        
-        // 更新主题提示
-        function updateThemeNotice() {
-            const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            
-            // 显示或隐藏系统主题提示
-            if (currentThemeMode === 'auto' && isDarkMode) {
-                systemThemeNotice.classList.add('auto-theme-active');
-                manualDarkNotice.classList.remove('manual-dark-active');
-            } else if (currentThemeMode === 'dark') {
-                systemThemeNotice.classList.remove('auto-theme-active');
-                manualDarkNotice.classList.add('manual-dark-active');
-            } else {
-                systemThemeNotice.classList.remove('auto-theme-active');
-                manualDarkNotice.classList.remove('manual-dark-active');
-            }
         }
         
         // 应用保存的主题
@@ -1523,14 +1669,10 @@
             
             // 应用主题
             applyTheme(savedTheme);
-            
-            // 更新主题提示
-            updateThemeNotice();
         }
         
         // 移动端显示提示
         function showMobileToast(message) {
-            // 创建提示元素
             const toast = document.createElement('div');
             toast.textContent = message;
             toast.style.cssText = `
@@ -1548,7 +1690,6 @@
                 animation: fadeInOut 2s ease-in-out;
             `;
             
-            // 添加动画样式
             const style = document.createElement('style');
             style.textContent = `
                 @keyframes fadeInOut {
@@ -1562,7 +1703,6 @@
             
             document.body.appendChild(toast);
             
-            // 2秒后移除提示
             setTimeout(() => {
                 document.body.removeChild(toast);
                 document.head.removeChild(style);
