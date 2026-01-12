@@ -1,0 +1,1192 @@
+:root {
+    --primary-color: #4a6fa5;
+    --secondary-color: #6b8cbc;
+    --background-color: #f5f7fa;
+    --card-color: #ffffff;
+    --text-color: #333333;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --border-radius: 10px;
+    --safe-area-inset-top: env(safe-area-inset-top, 0px);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+    /* 新增：书签项背景色 */
+    --bookmark-item-bg: #f9f9f9;
+    /* 新增：搜索框背景色 */
+    --search-input-bg: #ffffff;
+    /* 新增：搜索框边框色 */
+    --search-border-color: #ddd;
+}
+
+
+/* 深色模式变量 */
+
+@media (prefers-color-scheme: dark) {
+     :root:not([data-theme]) {
+        --primary-color: #6b8cbc;
+        --secondary-color: #8aa7d6;
+        --background-color: #1a1a1a;
+        --card-color: #2d2d2d;
+        --text-color: #f0f0f0;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        /* 深色模式书签背景 */
+        --bookmark-item-bg: rgba(255, 255, 255, 0.03);
+        /* 深色模式搜索框背景 */
+        --search-input-bg: rgba(255, 255, 255, 0.08);
+        /* 深色模式边框 */
+        --search-border-color: rgba(255, 255, 255, 0.15);
+    }
+}
+
+
+/* 用户手动选择主题时的变量 */
+
+[data-theme="light"] {
+    --primary-color: #4a6fa5;
+    --secondary-color: #6b8cbc;
+    --background-color: #f5f7fa;
+    --card-color: #ffffff;
+    --text-color: #333333;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* 浅色主题书签背景 */
+    --bookmark-item-bg: #f9f9f9;
+    --search-input-bg: #ffffff;
+    --search-border-color: #ddd;
+}
+
+[data-theme="dark"] {
+    --primary-color: #6b8cbc;
+    --secondary-color: #8aa7d6;
+    --background-color: #1a1a1a;
+    --card-color: #2d2d2d;
+    --text-color: #f0f0f0;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    /* 深色主题书签背景 */
+    --bookmark-item-bg: rgba(255, 255, 255, 0.03);
+    --search-input-bg: rgba(255, 255, 255, 0.08);
+    --search-border-color: rgba(255, 255, 255, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding: 20px;
+    padding-top: calc(20px + var(--safe-area-inset-top));
+    padding-bottom: calc(20px + var(--safe-area-inset-bottom));
+    transition: background-color 0.3s, color 0.3s;
+    min-height: 100vh;
+}
+
+
+/* 移动端优化 */
+
+@media (max-width: 768px) {
+    body {
+        padding: 12px;
+        padding-top: calc(12px + var(--safe-area-inset-top));
+    }
+}
+
+
+/* 防止移动端文本过小 */
+
+html {
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-top: 10px;
+}
+
+h1 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    background-color: var(--card-color);
+    padding: 18px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .controls {
+        padding: 15px;
+        margin-bottom: 20px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.search-container {
+    flex-grow: 1;
+    min-width: 0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+.search-box {
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 14px 60px 14px 50px;
+    /* 使用CSS变量 */
+    border: 1px solid var(--search-border-color);
+    border-radius: 50px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    /* 使用CSS变量 */
+    background-color: var(--search-input-bg);
+    color: var(--text-color);
+    border-color: rgba(0, 0, 0, 0.1);
+    -webkit-appearance: none;
+    /* 添加轻微阴影增强层次感 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+    #searchInput {
+        padding: 12px 55px 12px 45px;
+    }
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2), 0 4px 12px rgba(0, 0, 0, 0.08);
+    /* 聚焦时使用卡片背景色增强对比 */
+    background-color: var(--card-color);
+}
+
+.search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777;
+    pointer-events: none;
+    z-index: 2;
+}
+
+
+/* 搜索引擎选择器样式 - 与搜索框融合 */
+
+.search-engine-selector {
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+}
+
+#searchEngine {
+    padding: 12.5px 26px 12.8px 10px;
+    border: 1px solid var(--search-border-color);
+    /* 使用CSS变量 */
+    background-color: var(--primary-color);
+    color: #eee;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    appearance: none;
+    /*background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");*/
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+    border-radius: 0 50px 50px 0;
+    /* 稍微加粗 */
+    font-weight: 500;
+}
+
+
+/* 增强搜索引擎选择器悬停效果 */
+
+#searchEngine:hover {
+    background-color: var(--secondary-color);
+}
+
+#searchEngine:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.3);
+}
+
+.theme-selector {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .theme-selector {
+        justify-content: center;
+    }
+}
+
+.theme-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+}
+
+.theme-btn:hover {
+    transform: scale(1.1);
+}
+
+.theme-btn.active {
+    border-color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+#blueTheme {
+    background-color: #4a6fa5;
+}
+
+#greenTheme {
+    background-color: #5a8d5a;
+}
+
+#purpleTheme {
+    background-color: #8a6fa5;
+}
+
+#darkTheme {
+    background-color: #333333;
+}
+
+#autoTheme {
+    background: linear-gradient(45deg, #4a6fa5 50%, #333 50%);
+    position: relative;
+}
+
+#autoTheme::after {
+    content: "A";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .categories {
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+}
+
+.category-btn {
+    padding: 10px 18px;
+    background-color: var(--card-color);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: var(--shadow);
+    color: var(--text-color);
+    white-space: nowrap;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .category-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+.category-btn:active {
+    transform: scale(0.98);
+}
+
+.category-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.category-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.bookmarks-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+    .bookmarks-container {
+        gap: 20px;
+    }
+}
+
+.category-section {
+    background-color: var(--card-color);
+    border-radius: var(--border-radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+}
+
+@media (max-width: 768px) {
+    .category-section {
+        padding: 15px;
+    }
+    .category-title {
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+    .category-title h2 {
+        font-size: 1.2rem;
+    }
+}
+
+.category-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    color: var(--primary-color);
+}
+
+.category-icon {
+    font-size: 1.4rem;
+    margin-right: 10px;
+}
+
+.bookmarks-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+    list-style: none;
+}
+
+@media (max-width: 768px) {
+    .bookmarks-list {
+        /* 改为两列 */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .bookmark-item {
+        display: flex;
+        flex-direction: column;
+        /* 防止内容溢出容器 */
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    .bookmark-link {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        /* 允许内容区域收缩 */
+        min-height: 0;
+    }
+    .bookmark-item:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+    }
+    bookmark-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        /* 防止换行 */
+        flex-wrap: nowrap;
+    }
+    /* 减小移动端的图标尺寸 */
+    .bookmark-favicon {
+        width: 28px;
+        height: 28px;
+        margin-right: 10px;
+        /* 防止图标被压缩 */
+        flex-shrink: 0;
+    }
+    /* 调整书签信息区域 */
+    .bookmark-info {
+        /* 允许文本截断 */
+        min-width: 0;
+        /* 防止内容溢出 */
+        overflow: hidden;
+    }
+    /* 调整书签名称字体大小 */
+    .bookmark-name {
+        font-size: 0.95rem;
+        line-height: 1.2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+        /* 确保不超出容器 */
+        max-width: 100%;
+    }
+    /* 调整URL显示 */
+    .bookmark-url {
+        font-size: 0.75rem;
+        line-height: 1.1;
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        /* 最多显示两行 */
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        /* 调整高度以适应小屏幕 */
+        max-height: 2.2em;
+    }
+    /* 调整描述文本 */
+    .bookmark-description {
+        font-size: 0.85rem;
+        line-height: 1.3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        /* 最多显示两行 */
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        margin-top: 8px;
+        flex-grow: 1;
+    }
+}
+
+
+/* 对于更小的屏幕（小于480px）可以稍微调整 */
+
+@media (max-width: 480px) {
+    .bookmarks-list {
+        /* 保持两列 */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .bookmark-item {
+        /* 减小内边距以适应小屏幕 */
+        padding: 15px;
+    }
+    .bookmark-name {
+        font-size: 0.9rem;
+    }
+    .bookmark-url {
+        font-size: 0.7rem;
+        /* 超小屏幕只显示1行URL */
+        -webkit-line-clamp: 1;
+        max-height: 1.1em;
+    }
+    .bookmark-description {
+        font-size: 0.8rem;
+        /* 超小屏幕只显示1行描述 */
+        -webkit-line-clamp: 1;
+        max-height: 1.3em;
+    }
+}
+
+
+/* 对于极小的屏幕（小于350px）可以稍微调整间距 */
+
+@media (max-width: 350px) {
+    .bookmarks-list {
+        /* 保持两列 */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    .bookmark-item {
+        /* 进一步减小内边距 */
+        padding: 12px;
+    }
+}
+
+
+/* 确保文本溢出处理在非WebKit浏览器中也能工作 */
+
+.bookmark-url,
+.bookmark-description {
+    /* 标准属性 */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    /* 备用方案：使用max-height和text-overflow */
+    overflow: hidden;
+    /* 作为备用高度限制 */
+    max-height: 4.2em;
+    /* 明确的line-height */
+    line-height: 1.4;
+}
+
+
+/* 对于不支持-webkit-line-clamp的浏览器，使用JS辅助或纯CSS备用方案 */
+
+@supports (-webkit-line-clamp: 2) {
+    .bookmark-url {
+        -webkit-line-clamp: 2;
+    }
+    .bookmark-description {
+        -webkit-line-clamp: 3;
+    }
+}
+
+@supports not (-webkit-line-clamp: 2) {
+    /* 备用方案：使用伪元素创建省略号效果 */
+    .bookmark-url.truncate,
+    .bookmark-description.truncate {
+        position: relative;
+        /* 大约2行高度 */
+        max-height: 3em;
+        overflow: hidden;
+        /* 为省略号留出空间 */
+        padding-right: 1em;
+    }
+    .bookmark-url.truncate::after,
+    .bookmark-description.truncate::after {
+        content: '...';
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background: inherit;
+        padding-left: 2px;
+    }
+}
+
+.bookmark-item {
+    /* 使用100%宽度让grid自动调整 */
+    width: 100%;
+    padding: 18px;
+    border-radius: 10px;
+    transition: all 0.3s;
+    /* 使用CSS变量 */
+    background-color: var(--bookmark-item-bg);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+    /* 确保最小高度一致 */
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+}
+
+.bookmark-item:hover {
+    background-color: rgba(74, 111, 165, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.bookmark-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--text-color);
+    height: 100%;
+    flex-grow: 1;
+}
+
+.bookmark-header {
+    display: flex;
+    /* 改为居中对齐 */
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+
+/* 增大书签图标尺寸，并垂直居中 */
+
+.bookmark-favicon {
+    width: 32px;
+    height: 32px;
+    margin-right: 15px;
+    object-fit: contain;
+    flex-shrink: 0;
+    border-radius: 6px;
+    /* 确保图标垂直居中 */
+    align-self: center;
+}
+
+.bookmark-info {
+    flex-grow: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    /* 垂直居中内容 */
+    justify-content: center;
+}
+
+.bookmark-name {
+    font-weight: 700;
+    margin-bottom: 5px;
+    font-size: 1.05rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--primary-color);
+    line-height: 1.2;
+    /* 确保宽度100% */
+    width: 100%;
+}
+
+.bookmark-url {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    word-break: break-all;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    /* 限制最多显示2行 */
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    /* 基于行高计算的大约2行高度 */
+    max-height: 2.6em;
+}
+
+.bookmark-description {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.9;
+    line-height: 1.4;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    /* 限制最多显示3行 */
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    /* 基于行高计算的大约3行高度 */
+    max-height: 4.2em;
+    margin-top: 8px;
+}
+
+.bookmark-actions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 6px;
+    padding: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+    .bookmark-actions {
+        background-color: rgba(45, 45, 45, 0.9);
+    }
+    .fab-button {
+        background-color: var(--primary-color);
+    }
+    .fab-button:hover {
+        background-color: var(--secondary-color);
+    }
+}
+
+[data-theme="dark"] .bookmark-actions {
+    background-color: rgba(45, 45, 45, 0.9);
+}
+
+.bookmark-item:hover .bookmark-actions {
+    opacity: 1;
+}
+
+[data-theme="dark"] .fab-button {
+    background-color: var(--primary-color);
+}
+
+[data-theme="dark"] .fab-button:hover {
+    background-color: var(--secondary-color);
+}
+
+
+/* 移动端优化：调整悬浮按钮位置，避免与浏览器UI重叠 */
+
+@media (max-height: 600px) {
+    .floating-action-buttons {
+        bottom: 50px;
+        right: 15px;
+    }
+    .fab-button {
+        width: 48px;
+        height: 48px;
+        font-size: 1.1rem;
+    }
+}
+
+
+/* 防止移动端文本选择 */
+
+.fab-button {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+
+/* 移动端隐藏编辑和删除按钮 */
+
+@media (max-width: 768px) {
+    .bookmark-actions {
+        /* 移动端隐藏操作按钮 */
+        display: none;
+    }
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #777;
+    font-size: 1rem;
+    transition: color 0.2s;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.action-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--primary-color);
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    line-height: 1.5;
+}
+
+.add-bookmark-btn {
+    display: block;
+    margin: 30px auto;
+    padding: 14px 28px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    min-width: 180px;
+}
+
+.add-bookmark-btn:active {
+    transform: scale(0.98);
+}
+
+.add-bookmark-btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+    .add-bookmark-btn {
+        width: 100%;
+        max-width: 300px;
+        padding: 16px 28px;
+        font-size: 1.1rem;
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    padding-top: var(--safe-area-inset-top);
+    padding-bottom: var(--safe-area-inset-bottom);
+}
+
+@media (max-width: 768px) {
+    .modal {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: calc(20px + var(--safe-area-inset-top));
+    }
+}
+
+.modal-content {
+    background-color: var(--card-color);
+    padding: 28px;
+    border-radius: var(--border-radius);
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 20px;
+        max-height: calc(100vh - 40px - var(--safe-area-inset-top) - var(--safe-area-inset-bottom));
+    }
+}
+
+.modal h3 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    font-size: 1.4rem;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--card-color);
+    color: var(--text-color);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+}
+
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+@media (max-width: 768px) {
+    .modal-buttons {
+        flex-direction: column-reverse;
+    }
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-size: 1rem;
+    min-width: 100px;
+}
+
+@media (max-width: 768px) {
+    .btn {
+        width: 100%;
+        padding: 14px 24px;
+    }
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-color);
+    opacity: 0.6;
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
+.empty-state i {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    color: rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+    .empty-state i {
+        color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+.empty-state h3 {
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+}
+
+
+/* 滚动条样式 */
+
+ ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+ ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+ ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+ ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+
+/* 触摸设备优化 */
+
+@media (hover: none) and (pointer: coarse) {
+    .bookmark-item:hover {
+        transform: none;
+    }
+    .category-btn:hover,
+    .add-bookmark-btn:hover,
+    .btn:hover {
+        transform: none;
+    }
+    .action-btn:hover {
+        background-color: transparent;
+    }
+    .bookmark-item:active {
+        background-color: rgba(74, 111, 165, 0.15);
+        transform: scale(0.99);
+    }
+    .category-btn:active,
+    .add-bookmark-btn:active,
+    .btn:active {
+        transform: scale(0.98);
+    }
+}
+
+
+/* 书签统计信息 */
+
+.bookmark-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.bookmark-count {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+
+/* 搜索提示 */
+
+.search-hint {
+    font-size: 0.85rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    margin-top: 5px;
+    text-align: center;
+}
+
+
+/* 悬浮操作按钮样式 */
+
+.floating-action-buttons {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+
+/* 悬浮按钮基础样式 */
+
+.fab-button {
+    width: 56px;
+    height: 56px;
+    border-radius: 28px;
+    border: none;
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.fab-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.fab-button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+
+/* 浮动动画 */
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+
+/* 工具提示 */
+
+.fab-button::after {
+    content: attr(title);
+    position: absolute;
+    right: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.fab-button:hover::after {
+    opacity: 1;
+}
