@@ -2,7 +2,7 @@
     --primary-color: #4a6fa5;
     --secondary-color: #6b8cbc;
     --background-color: #f5f7fa;
-	--background-grid-color: #e0e0e0;
+	--background-grid-color: var(--primary-color);
     --card-color: #ffffff;
     --text-color: #333333;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -25,7 +25,7 @@
         --primary-color: #6b8cbc;
         --secondary-color: #8aa7d6;
         --background-color: #1a1a1a;
-		--background-grid-color: #2d2d2d;
+		--background-grid-color: #3f3f3f;
         --card-color: #2d2d2d;
         --text-color: #f0f0f0;
         --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -45,6 +45,7 @@
     --primary-color: #4a6fa5;
     --secondary-color: #6b8cbc;
     --background-color: #f5f7fa;
+	--background-grid-color: var(--primary-color);
     --card-color: #ffffff;
     --text-color: #333333;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -58,6 +59,7 @@
     --primary-color: #6b8cbc;
     --secondary-color: #8aa7d6;
     --background-color: #1a1a1a;
+	--background-grid-color: #3f3f3f;
     --card-color: #2d2d2d;
     --text-color: #f0f0f0;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -77,9 +79,13 @@
 
 body {
     background-color: var(--background-color);
+	/*
 	background-image: linear-gradient(to right, var(--background-grid-color) 1px, transparent 1px),
-						linear-gradient(to bottom, var(--background-grid-color) 1px, transparent 1px);
-	background-size: 20px 20px; /* 控制网格大小 */
+						 linear-gradient(to bottom, var(--background-grid-color) 1px, transparent 1px);
+	*/
+	background-image: radial-gradient(var(--background-grid-color) 1px, transparent 1px);
+	background-size: 33px 33px; /* 控制网格大小 */
+						 
     color: var(--text-color);
     line-height: 1.6;
     padding: 20px;
@@ -191,7 +197,7 @@ h1 {
 
 #searchInput {
     width: 100%;
-    padding: 14px 60px 14px 50px;
+    padding: 14px 80px 14px 50px;
     /* 使用CSS变量 */
     border: 1px solid var(--search-border-color);
     border-radius: 50px;
@@ -208,7 +214,7 @@ h1 {
 
 @media (max-width: 768px) {
     #searchInput {
-        padding: 12px 55px 12px 45px;
+        padding: 12px 75px 12px 45px;
     }
 }
 
@@ -240,11 +246,17 @@ h1 {
     transform: translateY(-50%);
     display: flex;
     align-items: center;
+	height: 100%;
+	width: 70px;
+	padding: 0.5px;
+	line-height: 1;
 }
 
 #searchEngine {
-    padding: 12.5px 26px 12.8px 10px;
-    border: 1px solid var(--search-border-color);
+	height: 100%;
+	width: 100%;
+	text-align: center;
+    border: none;
     /* 使用CSS变量 */
     background-color: var(--primary-color);
     color: #eee;
