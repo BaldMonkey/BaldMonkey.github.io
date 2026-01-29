@@ -255,6 +255,7 @@ h1 {
 #searchEngine {
 	height: 100%;
 	width: 100%;
+	text-align: -webkit-center;
 	text-align: center;
     border: none;
     /* 使用CSS变量 */
